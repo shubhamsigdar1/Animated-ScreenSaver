@@ -44,6 +44,7 @@ class Ball {
 
     //hits left side of screen
     if (this.x - this.size <= 0) {
+      //reverse the ball(go in other direction horizontally)
       this.velX = -this.velX;
     }
 
@@ -60,3 +61,34 @@ class Ball {
     this.y += this.velY;
   }
 }
+
+const balls = [];
+
+while (balls.length < 50) {
+  const size = random(10, 20);
+  const ball = new Ball(
+    random(0 + size, width - size), //x-coordinate
+    random(0 + size, height - size), //y-coordinate
+    random(1, 4), //vel-x
+    random(1, 4), //vel-y
+    randomRGB(), //Assign color
+    size
+  );
+
+  balls.push(ball);
+}
+
+//function to loop the animation
+function loop() {
+  ctx.fillStyle = 'rgba(0,0,0,0.3)';
+  ctx.fillRect(0, 0, width, height);
+  for (const ball of balls) {
+    ball.draw();
+    ball.update();
+  }
+
+  //recursion
+  requestAnimationFrame(loop);
+}
+
+loop();
