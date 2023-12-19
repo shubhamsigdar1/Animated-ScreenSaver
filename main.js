@@ -60,11 +60,27 @@ class Ball {
     this.x += this.velX;
     this.y += this.velY;
   }
+
+  //collision with ball
+  collisionDetect() {
+    for (const ball of balls) {
+      if (!(this === ball)) {
+        //trigonometry and differenciation
+        const dx = this.x - ball.x;
+        const dy = this.y - ball.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < this.size + ball.size) {
+          ball.color = this.ball = randomRGB();
+        }
+      }
+    }
+  }
 }
 
 const balls = [];
 
-while (balls.length < 50) {
+while (balls.length < 10) {
   const size = random(10, 20);
   const ball = new Ball(
     random(0 + size, width - size), //x-coordinate
@@ -80,11 +96,12 @@ while (balls.length < 50) {
 
 //function to loop the animation
 function loop() {
-  ctx.fillStyle = 'rgba(0,0,0,0.3)';
+  ctx.fillStyle = `rgba(0,0,0,0.2)`;
   ctx.fillRect(0, 0, width, height);
   for (const ball of balls) {
     ball.draw();
     ball.update();
+    ball.collisionDetect();
   }
 
   //recursion
